@@ -46,7 +46,7 @@ class CoursebookingsApplicationTests {
 
 	@Test
 	public void canFindCourseByBookingCustomerName(){
-		List<Course>foundCourses = courseRepository.findByBookingsCustomerName("Mark");
+		List<Course>foundCourses = courseRepository.findByBookingsCustomerNameIgnoreCase("Mark");
 		assertEquals(2,foundCourses.size());
 	}
 
@@ -57,5 +57,30 @@ class CoursebookingsApplicationTests {
 		assertEquals("Intro_JavaScript", foundCourses.get(0).getName());
 	}
 
+	@Test
+	void canFindBookingByDate() {
+		List<Booking> foundBookings = bookingRepository.findByDateIgnoreCase("23/02/2021");
+		assertEquals(1, foundBookings.size());
+		assertEquals("Origami", foundBookings.get(0).getCourse().getName());
+	}
 
+	@Test
+	void canFindCustomersForACourse(){
+		List<Customer> foundCustomers = customerRepository.findByBookingsCourseName("Origami");
+		assertEquals(2, foundCustomers.size());
+	}
+
+//	@Test
+//	void canFindCustomerForACourseAndTown() {
+//		List<Customer> foundCustomers = customerRepository.findByBookingsCourseNameAndBookingsCourseTown("Origami", "Glasgow");
+//		assertEquals(1, foundCustomers.size());
+//	}
+
+
+	@Test
+	void canFindCustomerByTownAndCourseName() {
+		List<Customer> foundCustomer = customerRepository.findByTownAndBookingsCourseName("Leven", "Origami");
+		assertEquals(1, foundCustomer.size());
+		assertEquals("Mark", foundCustomer.get(0).getName());
+	}
 }
