@@ -10,6 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
 class CoursebookingsApplicationTests {
 
@@ -31,12 +36,26 @@ class CoursebookingsApplicationTests {
 		Course course = new Course("Python", "Leven", 5);
 		courseRepository.save(course);
 
-		Customer customer = new Customer("Mark", "Leven", 28);
-		customerRepository.save(customer);
+		Customer mark = new Customer("Mark", "Leven", 28);
+		customerRepository.save(mark);
 
-		Booking booking = new Booking("22/02/2020", course, customer);
+		Booking booking = new Booking("22/02/2020", course, mark);
 		bookingRepository.save(booking);
 
 	}
+
+	@Test
+	public void canFindCourseByBookingCustomerName(){
+		List<Course>foundCourses = courseRepository.findByBookingsCustomerName("Mark");
+		assertEquals(2,foundCourses.size());
+	}
+
+	@Test
+	public void canFindCourseByRating() {
+		List<Course> foundCourses = courseRepository.findByStarRating(3);
+		assertEquals(1, foundCourses.size());
+		assertEquals("Intro_JavaScript", foundCourses.get(0).getName());
+	}
+
 
 }
